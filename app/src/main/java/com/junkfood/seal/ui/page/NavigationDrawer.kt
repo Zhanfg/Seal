@@ -165,6 +165,12 @@ fun NavigationDrawerSheetContent(
     footer: @Composable (() -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
+    // Navigate immediately. The drawer animation must not gate the navigation event:
+    // an interrupted close animation would otherwise drop the tap.
+    val navigateTo: (String) -> Unit = { route ->
+        onNavigateToRoute(route)
+        scope.launch { onDismissRequest() }
+    }
     Column(
         modifier =
             modifier
@@ -178,52 +184,32 @@ fun NavigationDrawerSheetContent(
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.download_queue)) },
                 icon = { Icon(Icons.Filled.Download, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.HOME) }
-                },
+                onClick = { navigateTo(route = Route.HOME) },
                 selected = currentRoute == Route.HOME,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.downloads_history)) },
                 icon = { Icon(Icons.Outlined.Subscriptions, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOADS) }
-                },
+                onClick = { navigateTo(route = Route.DOWNLOADS) },
                 selected = currentRoute == Route.DOWNLOADS,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.custom_command)) },
                 icon = { Icon(Icons.Outlined.Terminal, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.TASK_LIST) }
-                },
+                onClick = { navigateTo(route = Route.TASK_LIST) },
                 selected = currentRoute == Route.TASK_LIST,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.settings)) },
                 icon = { Icon(Icons.Outlined.Settings, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.SETTINGS) }
-                },
+                onClick = { navigateTo(route = Route.SETTINGS) },
                 selected = currentRoute == Route.SETTINGS_PAGE,
             )
 
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.sponsor)) },
                 icon = { Icon(Icons.Outlined.VolunteerActivism, null) },
-                onClick = {
-                    scope
-                        .launch { onDismissRequest() }
-                        .invokeOnCompletion { onNavigateToRoute(Route.DONATE) }
-                },
+                onClick = { navigateTo(route = Route.DONATE) },
                 selected = currentRoute == Route.DONATE,
             )
 
@@ -245,57 +231,35 @@ fun NavigationDrawerSheetContent(
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.general_settings)) },
                     icon = { Icon(Icons.Rounded.SettingsApplications, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion {
-                                onNavigateToRoute(Route.GENERAL_DOWNLOAD_PREFERENCES)
-                            }
-                    },
+                    onClick = { navigateTo(route = Route.GENERAL_DOWNLOAD_PREFERENCES) },
                     selected = currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.download_directory)) },
                     icon = { Icon(Icons.Rounded.Folder, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.DOWNLOAD_DIRECTORY) }
-                    },
+                    onClick = { navigateTo(route = Route.DOWNLOAD_DIRECTORY) },
                     selected = currentRoute == Route.DOWNLOAD_DIRECTORY,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.cookies)) },
                     icon = { Icon(Icons.Rounded.Cookie, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.COOKIE_PROFILE) }
-                    },
+                    onClick = { navigateTo(route = Route.COOKIE_PROFILE) },
                     selected = currentRoute == Route.COOKIE_PROFILE,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.trouble_shooting)) },
                     icon = { Icon(Icons.Rounded.BugReport, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.TROUBLESHOOTING) }
-                    },
+                    onClick = { navigateTo(route = Route.TROUBLESHOOTING) },
                     selected = currentRoute == Route.TROUBLESHOOTING,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.about)) },
                     icon = { Icon(Icons.Rounded.Info, null) },
-                    onClick = {
-                        scope
-                            .launch { onDismissRequest() }
-                            .invokeOnCompletion { onNavigateToRoute(Route.ABOUT) }
-                    },
+                    onClick = { navigateTo(route = Route.ABOUT) },
                     selected = currentRoute == Route.ABOUT,
                 )
             }
