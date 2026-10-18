@@ -184,32 +184,32 @@ fun NavigationDrawerSheetContent(
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.download_queue)) },
                 icon = { Icon(Icons.Filled.Download, null) },
-                onClick = { navigateTo(route = Route.HOME) },
+                onClick = { navigateTo(Route.HOME) },
                 selected = currentRoute == Route.HOME,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.downloads_history)) },
                 icon = { Icon(Icons.Outlined.Subscriptions, null) },
-                onClick = { navigateTo(route = Route.DOWNLOADS) },
+                onClick = { navigateTo(Route.DOWNLOADS) },
                 selected = currentRoute == Route.DOWNLOADS,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.custom_command)) },
                 icon = { Icon(Icons.Outlined.Terminal, null) },
-                onClick = { navigateTo(route = Route.TASK_LIST) },
+                onClick = { navigateTo(Route.TASK_LIST) },
                 selected = currentRoute == Route.TASK_LIST,
             )
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.settings)) },
                 icon = { Icon(Icons.Outlined.Settings, null) },
-                onClick = { navigateTo(route = Route.SETTINGS) },
+                onClick = { navigateTo(Route.SETTINGS) },
                 selected = currentRoute == Route.SETTINGS_PAGE,
             )
 
             NavigationDrawerItem(
                 label = { Text(stringResource(R.string.sponsor)) },
                 icon = { Icon(Icons.Outlined.VolunteerActivism, null) },
-                onClick = { navigateTo(route = Route.DONATE) },
+                onClick = { navigateTo(Route.DONATE) },
                 selected = currentRoute == Route.DONATE,
             )
 
@@ -231,35 +231,35 @@ fun NavigationDrawerSheetContent(
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.general_settings)) },
                     icon = { Icon(Icons.Rounded.SettingsApplications, null) },
-                    onClick = { navigateTo(route = Route.GENERAL_DOWNLOAD_PREFERENCES) },
+                    onClick = { navigateTo(Route.GENERAL_DOWNLOAD_PREFERENCES) },
                     selected = currentRoute == Route.GENERAL_DOWNLOAD_PREFERENCES,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.download_directory)) },
                     icon = { Icon(Icons.Rounded.Folder, null) },
-                    onClick = { navigateTo(route = Route.DOWNLOAD_DIRECTORY) },
+                    onClick = { navigateTo(Route.DOWNLOAD_DIRECTORY) },
                     selected = currentRoute == Route.DOWNLOAD_DIRECTORY,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.cookies)) },
                     icon = { Icon(Icons.Rounded.Cookie, null) },
-                    onClick = { navigateTo(route = Route.COOKIE_PROFILE) },
+                    onClick = { navigateTo(Route.COOKIE_PROFILE) },
                     selected = currentRoute == Route.COOKIE_PROFILE,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.trouble_shooting)) },
                     icon = { Icon(Icons.Rounded.BugReport, null) },
-                    onClick = { navigateTo(route = Route.TROUBLESHOOTING) },
+                    onClick = { navigateTo(Route.TROUBLESHOOTING) },
                     selected = currentRoute == Route.TROUBLESHOOTING,
                 )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.about)) },
                     icon = { Icon(Icons.Rounded.Info, null) },
-                    onClick = { navigateTo(route = Route.ABOUT) },
+                    onClick = { navigateTo(Route.ABOUT) },
                     selected = currentRoute == Route.ABOUT,
                 )
             }
