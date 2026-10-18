@@ -97,13 +97,20 @@ fun AppEntry(dialogViewModel: DownloadDialogViewModel) {
         }
     }
 
-    if (sheetState is DownloadDialogViewModel.SheetState.Configure) {
-        if (navController.currentDestination?.route != Route.HOME) {
+    val sheetValue by dialogViewModel.sheetValueFlow.collectAsStateWithLifecycle()
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    // Only bring the download page forward for a visible URL configuration sheet.
+    // The Configure state intentionally remains after the sheet is hidden; without
+    // the visibility check, any navigation is immediately popped back to HOME.
+    LaunchedEffect(sheetValue, sheetState, currentRoute) {
+        if (sheetValue == DownloadDialogViewModel.SheetValue.Expanded &&
+            sheetState is DownloadDialogViewModel.SheetState.Configure &&
+            currentRoute != null && currentRoute != Route.HOME
+        ) {
             navController.popBackStack(route = Route.HOME, inclusive = false, saveState = true)
         }
     }
-
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     var currentTopDestination by rememberSaveable { mutableStateOf(currentRoute) }
 
     LaunchedEffect(currentRoute) {
