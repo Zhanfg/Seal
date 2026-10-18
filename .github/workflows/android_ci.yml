@@ -20,10 +20,39 @@ jobs:
           cache: gradle
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
 
       - uses: gradle/actions/setup-gradle@v3
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew buildGenericRelease
+      - name: Prepare patched yt-dlp
+        run: sh scripts/prepare-patched-ytdlp.sh
+
+      - name: Build arm64-only debug APK
+        run: ./gradlew assembleGenericDebug -PnoSplits --no-daemon
+
+      - name: Test navigation and UI state
+        run: ./gradlew testGenericDebugUnitTest -PnoSplits --no-daemon
+
+      - name: Inspect test APK size
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t apks < <(find app/build/outputs/apk/generic/debug -maxdepth 1 -type f -name '*.apk')
+          printf 'APK count: %s\n' "${#apks[@]}"
+          test "${#apks[@]}" -eq 1
+          du -h "${apks[0]}"
+          unzip -l "${apks[0]}" | tail -n 2
+
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: seal-arm64-debug
+          path: app/build/outputs/apk/generic/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Verify release build
+        run: ./gradlew buildGenericRelease -PnoSplits --no-daemon

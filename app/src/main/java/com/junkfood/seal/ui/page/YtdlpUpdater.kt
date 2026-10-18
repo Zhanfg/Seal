@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.junkfood.seal.BuildConfig
 import com.junkfood.seal.Downloader
 import com.junkfood.seal.util.PreferenceUtil
 import com.junkfood.seal.util.PreferenceUtil.getBoolean
@@ -23,6 +24,8 @@ fun YtdlpUpdater() {
     val downloaderState by Downloader.downloaderState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        // Keep the bundled, pinned yt-dlp patch intact in installable debug builds.
+        if (BuildConfig.DEBUG) return@LaunchedEffect
         if (downloaderState !is Downloader.State.Idle) return@LaunchedEffect
 
         if (!YT_DLP_AUTO_UPDATE.getBoolean() && YT_DLP_VERSION.getString().isNotEmpty())

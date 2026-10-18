@@ -109,9 +109,7 @@ object DownloadUtil {
                     if (forceIpv4) {
                         addOption("-4")
                     }
-                    if (cookies) {
-                        enableCookies(userAgentString)
-                    }
+                    applyCookiesAndUserAgent(cookies, userAgentString)
                     if (restrictFilenames) {
                         addOption("--restrict-filenames")
                     }
@@ -154,9 +152,7 @@ object DownloadUtil {
                         addOption("-x")
                     }
                     applyFormatSorter(this@with, toFormatSorter())
-                    if (cookies) {
-                        enableCookies(userAgentString)
-                    }
+                    applyCookiesAndUserAgent(cookies, userAgentString)
                     if (proxy) {
                         enableProxy(proxyUrl)
                     }
@@ -358,8 +354,14 @@ object DownloadUtil {
         }
     }
 
-    private fun YoutubeDLRequest.enableCookies(userAgentString: String): YoutubeDLRequest =
-        this.addOption("--cookies", context.getCookiesFile().absolutePath).apply {
+    private fun YoutubeDLRequest.applyCookiesAndUserAgent(
+        cookies: Boolean,
+        userAgentString: String,
+    ): YoutubeDLRequest =
+        this.apply {
+            if (cookies) {
+                addOption("--cookies", context.getCookiesFile().absolutePath)
+            }
             if (userAgentString.isNotEmpty()) {
                 addOption("--add-header", "User-Agent:$userAgentString")
             }
@@ -685,9 +687,7 @@ object DownloadUtil {
                 .apply {
                     addOption("--no-mtime")
                     //                addOption("-v")
-                    if (cookies) {
-                        enableCookies(userAgentString)
-                    }
+                    applyCookiesAndUserAgent(cookies, userAgentString)
                     if (restrictFilenames) {
                         addOption("--restrict-filenames")
                     }
@@ -901,9 +901,7 @@ object DownloadUtil {
                         FileUtil.writeContentToFile(template.template, context.getConfigFile())
                             .absolutePath,
                     )
-                    if (cookies) {
-                        enableCookies(userAgentString)
-                    }
+                    applyCookiesAndUserAgent(cookies, userAgentString)
                 }
             }
 
@@ -942,9 +940,7 @@ object DownloadUtil {
                         FileUtil.writeContentToFile(template.template, context.getConfigFile())
                             .absolutePath,
                     )
-                    if (cookies) {
-                        enableCookies(userAgentString)
-                    }
+                    applyCookiesAndUserAgent(cookies, userAgentString)
                 }
 
             onProcessStarted()
