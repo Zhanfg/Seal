@@ -27,8 +27,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew buildGenericRelease assembleGenericDebug
+      - name: Prepare patched yt-dlp
+        run: sh scripts/prepare-patched-ytdlp.sh
+
+      - name: Build installable debug APKs
+        run: ./gradlew assembleGenericDebug --no-daemon
 
       - name: Upload test APKs
         uses: actions/upload-artifact@v4
@@ -37,3 +40,6 @@ jobs:
           path: app/build/outputs/apk/generic/debug/*.apk
           if-no-files-found: error
           retention-days: 7
+
+      - name: Verify release build
+        run: ./gradlew buildGenericRelease --no-daemon
